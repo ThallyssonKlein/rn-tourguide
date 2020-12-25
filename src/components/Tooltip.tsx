@@ -43,23 +43,24 @@ export const Tooltip = ({
     <View style={[styles.bottomBar]}>
       {!isLastStep ? (
         <TouchableOpacity onPress={handleStop}>
-          <Button>{labels?.skip || 'Skip'}</Button>
+          <Button>{(currentStep.order === -1 ? 'Finish' : labels?.skip) || 'Skip'}</Button>
         </TouchableOpacity>
       ) : null}
-      {!isFirstStep ? (
+      {(!isFirstStep && currentStep.order !== 3 && currentStep.order !== 0) ? (
         <TouchableOpacity onPress={handlePrev}>
           <Button>{labels?.previous || 'Previous'}</Button>
         </TouchableOpacity>
       ) : null}
-      {!isLastStep ? (
-        <TouchableOpacity onPress={handleNext}>
-          <Button>{labels?.next || 'Next'}</Button>
+      {(!isLastStep && currentStep.order !== -1)? (
+        <TouchableOpacity onPress={(currentStep.order !== 0) ? handleNext : handleStop}>
+          <Button>{(currentStep.order !== 0) ? (labels?.next || 'Next') : (labels?.finish || 'Finish')}</Button>
         </TouchableOpacity>
-      ) : (
+      ) :
+        ((currentStep.order !== -1) ? 
         <TouchableOpacity onPress={handleStop}>
           <Button>{labels?.finish || 'Finish'}</Button>
-        </TouchableOpacity>
-      )}
+        </TouchableOpacity> : <View/>)
+      }
     </View>
   </View>
 )
